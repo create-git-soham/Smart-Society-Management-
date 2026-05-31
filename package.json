@@ -1,0 +1,17 @@
+{
+  "name": "smart-society-management",
+  "version": "1.0.0",
+  "description": "Smart Society Management System with Node.js Express & Supabase Integration",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.8",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "nodemailer": "^6.9.13"
+  },
+  "author": "Society Squad",
+  "license": "ISC"
+}

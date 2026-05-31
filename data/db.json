@@ -1,0 +1,1068 @@
+{
+  "residents": [
+    {
+      "id": 1,
+      "name": "Aarav Sharma",
+      "flat": "101-A",
+      "phone": "+91 98765 43210",
+      "occupancy": "owner",
+      "approved": true,
+      "is_committee_member": true
+    },
+    {
+      "id": 2,
+      "name": "Priya Patel",
+      "flat": "302-B",
+      "phone": "+91 98123 45678",
+      "occupancy": "tenant",
+      "approved": true,
+      "is_committee_member": false
+    },
+    {
+      "id": 3,
+      "name": "Rohan Verma",
+      "flat": "205-A",
+      "phone": "+91 95555 12345",
+      "occupancy": "owner",
+      "approved": true,
+      "is_committee_member": true
+    },
+    {
+      "id": 4,
+      "name": "Sneha Reddy",
+      "flat": "404-C",
+      "phone": "+91 99887 76655",
+      "occupancy": "tenant",
+      "approved": false,
+      "is_committee_member": false
+    },
+    {
+      "id": 5,
+      "name": "Vikram Singh",
+      "flat": "501-B",
+      "phone": "+91 88776 65544",
+      "occupancy": "owner",
+      "approved": true,
+      "is_committee_member": false
+    },
+    {
+      "id": 6,
+      "name": "Ananya Iyer",
+      "flat": "102-A",
+      "phone": "+91 94440 12345",
+      "occupancy": "owner",
+      "approved": true,
+      "is_committee_member": false
+    },
+    {
+      "id": 7,
+      "name": "Kabir Malhotra",
+      "flat": "201-B",
+      "phone": "+91 93335 98765",
+      "occupancy": "tenant",
+      "approved": true,
+      "is_committee_member": false
+    },
+    {
+      "id": 8,
+      "name": "Meera Joshi",
+      "flat": "304-C",
+      "phone": "+91 92221 44556",
+      "occupancy": "owner",
+      "approved": true,
+      "is_committee_member": false
+    },
+    {
+      "id": 9,
+      "name": "Arjun Deshmukh",
+      "flat": "402-A",
+      "phone": "+91 91112 33445",
+      "occupancy": "owner",
+      "approved": true,
+      "is_committee_member": false
+    },
+    {
+      "id": 10,
+      "name": "Aditi Rao",
+      "flat": "503-C",
+      "phone": "+91 90003 55667",
+      "occupancy": "tenant",
+      "approved": true,
+      "is_committee_member": false
+    },
+    {
+      "id": 11,
+      "name": "Devendra Jha",
+      "flat": "104-B",
+      "phone": "+91 98884 77889",
+      "occupancy": "owner",
+      "approved": true,
+      "is_committee_member": false
+    },
+    {
+      "id": 12,
+      "name": "Riya Das",
+      "flat": "202-C",
+      "phone": "+91 97775 66778",
+      "occupancy": "tenant",
+      "approved": false,
+      "is_committee_member": false
+    },
+    {
+      "id": 13,
+      "name": "Sanjay Kulkarni",
+      "flat": "301-A",
+      "phone": "+91 96666 55443",
+      "occupancy": "owner",
+      "approved": true,
+      "is_committee_member": false
+    },
+    {
+      "id": 14,
+      "name": "Zoya Ahmed",
+      "flat": "403-B",
+      "phone": "+91 95557 44332",
+      "occupancy": "tenant",
+      "approved": true,
+      "is_committee_member": false
+    },
+    {
+      "id": 15,
+      "name": "Rahul Nair",
+      "flat": "502-D",
+      "phone": "+91 94448 33221",
+      "occupancy": "owner",
+      "approved": true,
+      "is_committee_member": false
+    },
+    {
+      "id": 16,
+      "name": "Neha Gupta",
+      "flat": "601-A",
+      "phone": "+91 98881 11223",
+      "occupancy": "owner",
+      "approved": true,
+      "is_committee_member": false
+    },
+    {
+      "id": 17,
+      "name": "Karthik Shetty",
+      "flat": "602-B",
+      "phone": "+91 97772 22334",
+      "occupancy": "tenant",
+      "approved": true,
+      "is_committee_member": false
+    },
+    {
+      "id": 18,
+      "name": "Shruti Desai",
+      "flat": "603-C",
+      "phone": "+91 96663 33445",
+      "occupancy": "owner",
+      "approved": true,
+      "is_committee_member": false
+    },
+    {
+      "id": 19,
+      "name": "Manish Tiwari",
+      "flat": "701-A",
+      "phone": "+91 95554 44556",
+      "occupancy": "tenant",
+      "approved": true,
+      "is_committee_member": false
+    },
+    {
+      "id": 20,
+      "name": "Kavita Gokhale",
+      "flat": "702-D",
+      "phone": "+91 94445 55667",
+      "occupancy": "owner",
+      "approved": true,
+      "is_committee_member": false
+    },
+    {
+      "id": 21,
+      "name": "Amit Bhosale",
+      "flat": "801-A",
+      "phone": "+91 93336 66778",
+      "occupancy": "owner",
+      "approved": true,
+      "is_committee_member": false
+    },
+    {
+      "id": 22,
+      "name": "Deepa Nambiar",
+      "flat": "802-B",
+      "phone": "+91 92227 77889",
+      "occupancy": "tenant",
+      "approved": true,
+      "is_committee_member": false
+    },
+    {
+      "id": 23,
+      "name": "Roshan Chauhan",
+      "flat": "803-C",
+      "phone": "+91 91118 88990",
+      "occupancy": "owner",
+      "approved": true,
+      "is_committee_member": false
+    },
+    {
+      "id": 24,
+      "name": "Aliya Sheikh",
+      "flat": "901-A",
+      "phone": "+91 90009 99001",
+      "occupancy": "owner",
+      "approved": true,
+      "is_committee_member": false
+    },
+    {
+      "id": 25,
+      "name": "Varun Apte",
+      "flat": "902-B",
+      "phone": "+91 98880 00112",
+      "occupancy": "tenant",
+      "approved": false,
+      "is_committee_member": false
+    },
+    {
+      "id": 26,
+      "name": "Kiran Kumar",
+      "flat": "903-D",
+      "phone": "+91 97771 11223",
+      "occupancy": "owner",
+      "approved": true,
+      "is_committee_member": false
+    },
+    {
+      "id": 27,
+      "name": "Vishal Yadav",
+      "flat": "1001-A",
+      "phone": "+91 96662 22334",
+      "occupancy": "owner",
+      "approved": true,
+      "is_committee_member": false
+    },
+    {
+      "id": 28,
+      "name": "Harish Patil",
+      "flat": "1002-B",
+      "phone": "+91 95553 33445",
+      "occupancy": "tenant",
+      "approved": true,
+      "is_committee_member": false
+    },
+    {
+      "id": 29,
+      "name": "Pooja Mhatre",
+      "flat": "1003-C",
+      "phone": "+91 94444 44556",
+      "occupancy": "owner",
+      "approved": true,
+      "is_committee_member": false
+    },
+    {
+      "id": 30,
+      "name": "Sameer Kadam",
+      "flat": "1101-A",
+      "phone": "+91 93335 55667",
+      "occupancy": "owner",
+      "approved": true,
+      "is_committee_member": false
+    }
+  ],
+  "vehicles": [
+    {
+      "id": 1,
+      "resident_id": 1,
+      "plate": "MH-12-XX-1234",
+      "type": "Car"
+    },
+    {
+      "id": 2,
+      "resident_id": 1,
+      "plate": "MH-12-YY-5678",
+      "type": "Bike"
+    },
+    {
+      "id": 3,
+      "resident_id": 2,
+      "plate": "GJ-01-ZZ-9999",
+      "type": "Car"
+    },
+    {
+      "id": 4,
+      "resident_id": 5,
+      "plate": "DL-03-CC-2222",
+      "type": "Car"
+    },
+    {
+      "id": 5,
+      "resident_id": 6,
+      "plate": "MH-12-CD-9876",
+      "type": "Car"
+    },
+    {
+      "id": 6,
+      "resident_id": 8,
+      "plate": "MH-14-EF-1122",
+      "type": "Bike"
+    },
+    {
+      "id": 7,
+      "resident_id": 9,
+      "plate": "MH-12-GH-3344",
+      "type": "Car"
+    },
+    {
+      "id": 8,
+      "resident_id": 10,
+      "plate": "KA-03-MM-8899",
+      "type": "Car"
+    },
+    {
+      "id": 9,
+      "resident_id": 13,
+      "plate": "MH-12-NP-7711",
+      "type": "Car"
+    },
+    {
+      "id": 10,
+      "resident_id": 15,
+      "plate": "KL-07-CD-4455",
+      "type": "Car"
+    },
+    {
+      "id": 11,
+      "resident_id": 16,
+      "plate": "MH-12-AB-1010",
+      "type": "Bike"
+    },
+    {
+      "id": 12,
+      "resident_id": 18,
+      "plate": "MH-14-XY-2020",
+      "type": "Car"
+    },
+    {
+      "id": 13,
+      "resident_id": 19,
+      "plate": "DL-01-ZA-3030",
+      "type": "Bike"
+    },
+    {
+      "id": 14,
+      "resident_id": 21,
+      "plate": "MH-01-BB-4040",
+      "type": "Car"
+    },
+    {
+      "id": 15,
+      "resident_id": 21,
+      "plate": "MH-01-CC-5050",
+      "type": "Car"
+    },
+    {
+      "id": 16,
+      "resident_id": 23,
+      "plate": "MH-02-DD-6060",
+      "type": "Bike"
+    },
+    {
+      "id": 17,
+      "resident_id": 24,
+      "plate": "MH-12-EE-7070",
+      "type": "Car"
+    },
+    {
+      "id": 18,
+      "resident_id": 26,
+      "plate": "MH-14-FF-8080",
+      "type": "Car"
+    },
+    {
+      "id": 19,
+      "resident_id": 27,
+      "plate": "MH-01-GG-9090",
+      "type": "Bike"
+    },
+    {
+      "id": 20,
+      "resident_id": 28,
+      "plate": "MH-02-HH-0101",
+      "type": "Car"
+    },
+    {
+      "id": 21,
+      "resident_id": 29,
+      "plate": "MH-12-II-1212",
+      "type": "Car"
+    },
+    {
+      "id": 22,
+      "resident_id": 30,
+      "plate": "MH-01-SR-5555",
+      "type": "Car"
+    },
+    {
+      "id": 23,
+      "resident_id": 30,
+      "plate": "MH-01-KK-9999",
+      "type": "Car"
+    },
+    {
+      "id": 24,
+      "resident_id": 30,
+      "plate": "MH-01-LL-8888",
+      "type": "Bike"
+    }
+  ],
+  "bills": [
+    {
+      "id": 101,
+      "resident_id": 1,
+      "month": "May 2026",
+      "base_fee": 2000,
+      "missed_months": 0,
+      "waived": false,
+      "status": "paid",
+      "paid_amount": 2000,
+      "paid_date": "2026-05-02"
+    },
+    {
+      "id": 102,
+      "resident_id": 2,
+      "month": "May 2026",
+      "base_fee": 1500,
+      "missed_months": 0,
+      "waived": false,
+      "status": "paid",
+      "paid_amount": 1500,
+      "paid_date": "2026-05-10"
+    },
+    {
+      "id": 103,
+      "resident_id": 3,
+      "month": "May 2026",
+      "base_fee": 2500,
+      "missed_months": 1,
+      "waived": false,
+      "status": "unpaid",
+      "paid_amount": null,
+      "paid_date": null
+    },
+    {
+      "id": 104,
+      "resident_id": 4,
+      "month": "May 2026",
+      "base_fee": 1500,
+      "missed_months": 0,
+      "waived": false,
+      "status": "unpaid",
+      "paid_amount": null,
+      "paid_date": null
+    },
+    {
+      "id": 105,
+      "resident_id": 5,
+      "month": "May 2026",
+      "base_fee": 2000,
+      "missed_months": 0,
+      "waived": false,
+      "status": "paid",
+      "paid_amount": 2000,
+      "paid_date": "2026-05-01"
+    },
+    {
+      "id": 106,
+      "resident_id": 7,
+      "month": "May 2026",
+      "base_fee": 1500,
+      "missed_months": 0,
+      "waived": false,
+      "status": "paid",
+      "paid_amount": 1500,
+      "paid_date": "2026-05-05"
+    },
+    {
+      "id": 107,
+      "resident_id": 8,
+      "month": "May 2026",
+      "base_fee": 2200,
+      "missed_months": 0,
+      "waived": false,
+      "status": "paid",
+      "paid_amount": 2200,
+      "paid_date": "2026-05-04"
+    },
+    {
+      "id": 108,
+      "resident_id": 9,
+      "month": "May 2026",
+      "base_fee": 2000,
+      "missed_months": 2,
+      "waived": false,
+      "status": "unpaid",
+      "paid_amount": null,
+      "paid_date": null
+    },
+    {
+      "id": 109,
+      "resident_id": 11,
+      "month": "May 2026",
+      "base_fee": 2000,
+      "missed_months": 0,
+      "waived": false,
+      "status": "paid",
+      "paid_amount": 2000,
+      "paid_date": "2026-05-01"
+    },
+    {
+      "id": 110,
+      "resident_id": 13,
+      "month": "May 2026",
+      "base_fee": 2000,
+      "missed_months": 0,
+      "waived": true,
+      "status": "paid",
+      "paid_amount": 0,
+      "paid_date": "2026-05-01"
+    },
+    {
+      "id": 111,
+      "resident_id": 15,
+      "month": "May 2026",
+      "base_fee": 2500,
+      "missed_months": 0,
+      "waived": false,
+      "status": "paid",
+      "paid_amount": 2500,
+      "paid_date": "2026-05-03"
+    },
+    {
+      "id": 112,
+      "resident_id": 16,
+      "month": "May 2026",
+      "base_fee": 2000,
+      "missed_months": 0,
+      "waived": false,
+      "status": "paid",
+      "paid_amount": 2000,
+      "paid_date": "2026-05-07"
+    },
+    {
+      "id": 113,
+      "resident_id": 17,
+      "month": "May 2026",
+      "base_fee": 1500,
+      "missed_months": 0,
+      "waived": false,
+      "status": "paid",
+      "paid_amount": 1500,
+      "paid_date": "2026-05-08"
+    },
+    {
+      "id": 114,
+      "resident_id": 18,
+      "month": "May 2026",
+      "base_fee": 2200,
+      "missed_months": 1,
+      "waived": false,
+      "status": "unpaid",
+      "paid_amount": null,
+      "paid_date": null
+    },
+    {
+      "id": 115,
+      "resident_id": 20,
+      "month": "May 2026",
+      "base_fee": 2000,
+      "missed_months": 0,
+      "waived": false,
+      "status": "paid",
+      "paid_amount": 2000,
+      "paid_date": "2026-05-11"
+    },
+    {
+      "id": 116,
+      "resident_id": 21,
+      "month": "May 2026",
+      "base_fee": 3000,
+      "missed_months": 0,
+      "waived": false,
+      "status": "paid",
+      "paid_amount": 3000,
+      "paid_date": "2026-05-02"
+    },
+    {
+      "id": 117,
+      "resident_id": 22,
+      "month": "May 2026",
+      "base_fee": 1500,
+      "missed_months": 0,
+      "waived": false,
+      "status": "paid",
+      "paid_amount": 1500,
+      "paid_date": "2026-05-15"
+    },
+    {
+      "id": 118,
+      "resident_id": 24,
+      "month": "May 2026",
+      "base_fee": 2000,
+      "missed_months": 0,
+      "waived": false,
+      "status": "paid",
+      "paid_amount": 2000,
+      "paid_date": "2026-05-04"
+    },
+    {
+      "id": 119,
+      "resident_id": 25,
+      "month": "May 2026",
+      "base_fee": 1500,
+      "missed_months": 3,
+      "waived": false,
+      "status": "unpaid",
+      "paid_amount": null,
+      "paid_date": null
+    },
+    {
+      "id": 120,
+      "resident_id": 27,
+      "month": "May 2026",
+      "base_fee": 2000,
+      "missed_months": 0,
+      "waived": false,
+      "status": "paid",
+      "paid_amount": 2000,
+      "paid_date": "2026-05-09"
+    },
+    {
+      "id": 121,
+      "resident_id": 30,
+      "month": "May 2026",
+      "base_fee": 3500,
+      "missed_months": 0,
+      "waived": false,
+      "status": "paid",
+      "paid_amount": 3500,
+      "paid_date": "2026-05-01"
+    }
+  ],
+  "bookings": [
+    {
+      "id": 201,
+      "resident_id": 1,
+      "facility": "Party Hall",
+      "date": "2026-06-15",
+      "status": "approved"
+    },
+    {
+      "id": 202,
+      "resident_id": 2,
+      "facility": "Turf",
+      "date": "2026-06-20",
+      "status": "approved"
+    },
+    {
+      "id": 203,
+      "resident_id": 6,
+      "facility": "Gymnasium",
+      "date": "2026-05-29",
+      "status": "approved"
+    },
+    {
+      "id": 204,
+      "resident_id": 11,
+      "facility": "Turf",
+      "date": "2026-05-30",
+      "status": "approved"
+    },
+    {
+      "id": 205,
+      "resident_id": 13,
+      "facility": "Party Hall",
+      "date": "2026-06-15",
+      "status": "rejected"
+    },
+    {
+      "id": 206,
+      "resident_id": 16,
+      "facility": "Turf",
+      "date": "2026-06-05",
+      "status": "pending"
+    },
+    {
+      "id": 207,
+      "resident_id": 18,
+      "facility": "Party Hall",
+      "date": "2026-06-10",
+      "status": "approved"
+    },
+    {
+      "id": 208,
+      "resident_id": 21,
+      "facility": "Gymnasium",
+      "date": "2026-06-01",
+      "status": "approved"
+    },
+    {
+      "id": 209,
+      "resident_id": 23,
+      "facility": "Turf",
+      "date": "2026-06-02",
+      "status": "pending"
+    },
+    {
+      "id": 210,
+      "resident_id": 30,
+      "facility": "Party Hall",
+      "date": "2026-07-01",
+      "status": "approved"
+    }
+  ],
+  "tickets": [
+    {
+      "id": 301,
+      "resident_id": 1,
+      "category": "Plumbing",
+      "description": "Leaking pipe in master bathroom, causing dampness.",
+      "priority": "urgent",
+      "status": "assigned",
+      "vendor_id": 3
+    },
+    {
+      "id": 302,
+      "resident_id": 3,
+      "category": "Electrical Fault",
+      "description": "Balcony light short circuit, sparks flying.",
+      "priority": "urgent",
+      "status": "pending",
+      "vendor_id": null
+    },
+    {
+      "id": 303,
+      "resident_id": 6,
+      "category": "Carpentry",
+      "description": "Main door handle is loose and needs tightening.",
+      "priority": "low",
+      "status": "resolved",
+      "vendor_id": 2
+    },
+    {
+      "id": 304,
+      "resident_id": 8,
+      "category": "Elevator Malfunction",
+      "description": "Wing C elevator making grinding noise.",
+      "priority": "urgent",
+      "status": "assigned",
+      "vendor_id": 11
+    },
+    {
+      "id": 305,
+      "resident_id": 9,
+      "category": "Plumbing",
+      "description": "Low water pressure in kitchen flush line.",
+      "priority": "medium",
+      "status": "assigned",
+      "vendor_id": 3
+    },
+    {
+      "id": 306,
+      "resident_id": 16,
+      "category": "Electrical Fault",
+      "description": "Common corridor tube-light flickering continuously.",
+      "priority": "medium",
+      "status": "resolved",
+      "vendor_id": 5
+    },
+    {
+      "id": 307,
+      "resident_id": 21,
+      "category": "Carpentry",
+      "description": "Balcony wooden flooring plank coming off.",
+      "priority": "low",
+      "status": "pending",
+      "vendor_id": null
+    },
+    {
+      "id": 308,
+      "resident_id": 25,
+      "category": "Elevator Malfunction",
+      "description": "Wing B elevator door not closing properly on 9th floor.",
+      "priority": "urgent",
+      "status": "assigned",
+      "vendor_id": 11
+    },
+    {
+      "id": 309,
+      "resident_id": 28,
+      "category": "Plumbing",
+      "description": "Water not draining in the guest bathroom.",
+      "priority": "urgent",
+      "status": "resolved",
+      "vendor_id": 3
+    },
+    {
+      "id": 310,
+      "resident_id": 30,
+      "category": "Electrical Fault",
+      "description": "Main AC trip switch faulty, keeps tripping.",
+      "priority": "urgent",
+      "status": "pending",
+      "vendor_id": null
+    }
+  ],
+  "visitors": [
+    {
+      "id": 401,
+      "resident_id": 2,
+      "name": "Raj Mehta",
+      "category": "Guest",
+      "passcode": "483921",
+      "status": "active",
+      "created_at": "2026-05-26T14:30:00Z"
+    },
+    {
+      "id": 402,
+      "resident_id": 1,
+      "name": "Amazon Delivery",
+      "category": "Delivery",
+      "passcode": "109283",
+      "status": "expired",
+      "created_at": "2026-05-26T15:00:00Z"
+    },
+    {
+      "id": 403,
+      "resident_id": 3,
+      "name": "UrbanCompany Cleaner",
+      "category": "Service",
+      "passcode": "554321",
+      "status": "active",
+      "created_at": "2026-05-26T16:00:00Z"
+    },
+    {
+      "id": 404,
+      "resident_id": 7,
+      "name": "Swiggy Delivery",
+      "category": "Delivery",
+      "passcode": "887651",
+      "status": "expired",
+      "created_at": "2026-05-26T17:00:00Z"
+    },
+    {
+      "id": 405,
+      "resident_id": 12,
+      "name": "Zomato Delivery",
+      "category": "Delivery",
+      "passcode": "998012",
+      "status": "expired",
+      "created_at": "2026-05-26T18:00:00Z"
+    },
+    {
+      "id": 406,
+      "resident_id": 16,
+      "name": "Milma Milk Delivery",
+      "category": "Service",
+      "passcode": "112233",
+      "status": "active",
+      "created_at": "2026-05-26T19:00:00Z"
+    },
+    {
+      "id": 407,
+      "resident_id": 18,
+      "name": "Blinkit Groceries",
+      "category": "Delivery",
+      "passcode": "776655",
+      "status": "active",
+      "created_at": "2026-05-26T20:00:00Z"
+    },
+    {
+      "id": 408,
+      "resident_id": 21,
+      "name": "Aman Trivedi",
+      "category": "Guest",
+      "passcode": "111111",
+      "status": "expired",
+      "created_at": "2026-05-26T21:00:00Z"
+    },
+    {
+      "id": 409,
+      "resident_id": 24,
+      "name": "MakeUp Artist",
+      "category": "Service",
+      "passcode": "222333",
+      "status": "active",
+      "created_at": "2026-05-26T22:00:00Z"
+    },
+    {
+      "id": 410,
+      "resident_id": 27,
+      "name": "Flipkart Delivery",
+      "category": "Delivery",
+      "passcode": "444555",
+      "status": "expired",
+      "created_at": "2026-05-26T23:00:00Z"
+    },
+    {
+      "id": 411,
+      "resident_id": 30,
+      "name": "Gayatri Phadke",
+      "category": "Guest",
+      "passcode": "999999",
+      "status": "active",
+      "created_at": "2026-05-26T23:30:00Z"
+    }
+  ],
+  "vendors": [
+    {
+      "id": 1,
+      "name": "Raju Mistri",
+      "category": "Civil & Masonry"
+    },
+    {
+      "id": 2,
+      "name": "Amit Saini",
+      "category": "Carpentry"
+    },
+    {
+      "id": 3,
+      "name": "Ramesh Kumar",
+      "category": "Plumbing"
+    },
+    {
+      "id": 4,
+      "name": "Tukaram Patil",
+      "category": "Water Supply & Borewell"
+    },
+    {
+      "id": 5,
+      "name": "Suresh Dev",
+      "category": "Electrical"
+    },
+    {
+      "id": 6,
+      "name": "Manoj Desai",
+      "category": "Fire & Gas Safety"
+    },
+    {
+      "id": 7,
+      "name": "Deepak Shinde",
+      "category": "Housekeeping & Waste"
+    },
+    {
+      "id": 8,
+      "name": "Sunil Jadhav",
+      "category": "Pest Control"
+    },
+    {
+      "id": 9,
+      "name": "Vikram Mane",
+      "category": "Security & Access"
+    },
+    {
+      "id": 10,
+      "name": "Neeraj Gupta",
+      "category": "Accounting & Billing"
+    },
+    {
+      "id": 11,
+      "name": "Ashok Kulkarni",
+      "category": "Facility Management"
+    },
+    {
+      "id": 12,
+      "name": "Dr. Anjali Joshi",
+      "category": "Medical Assistance"
+    }
+  ],
+  "emergencyLogs": [
+    {
+      "id": 501,
+      "resident_id": 3,
+      "flat": "205-A",
+      "timestamp": "2026-05-23T09:37:15.739Z",
+      "status": "resolved",
+      "resolved_at": "2026-05-28T05:07:15.740Z"
+    },
+    {
+      "id": 502,
+      "resident_id": 8,
+      "flat": "304-C",
+      "timestamp": "2026-05-28T07:37:15.740Z",
+      "status": "active",
+      "resolved_at": null
+    },
+    {
+      "id": 503,
+      "resident_id": 15,
+      "flat": "502-D",
+      "timestamp": "2026-05-16T09:37:15.740Z",
+      "status": "resolved",
+      "resolved_at": "2026-05-17T09:37:15.740Z"
+    },
+    {
+      "id": 504,
+      "resident_id": 22,
+      "flat": "802-B",
+      "timestamp": "2026-05-27T09:37:15.740Z",
+      "status": "resolved",
+      "resolved_at": "2026-05-27T11:37:15.740Z"
+    },
+    {
+      "id": 505,
+      "resident_id": 29,
+      "flat": "1003-C",
+      "timestamp": "2026-05-28T09:07:15.740Z",
+      "status": "active",
+      "resolved_at": null
+    }
+  ],
+  "resident_members": [
+    {
+      "id": 1,
+      "resident_id": 1,
+      "name": "Kiran Sharma",
+      "relationship": "Spouse",
+      "phone": "+91 98765 43211"
+    },
+    {
+      "id": 2,
+      "resident_id": 1,
+      "name": "Ishaan Sharma",
+      "relationship": "Child",
+      "phone": ""
+    },
+    {
+      "id": 3,
+      "resident_id": 2,
+      "name": "Ketan Patel",
+      "relationship": "Spouse",
+      "phone": "+91 98123 45679"
+    },
+    {
+      "id": 4,
+      "resident_id": 3,
+      "name": "Anila Verma",
+      "relationship": "Parent",
+      "phone": ""
+    },
+    {
+      "id": 5,
+      "resident_id": 5,
+      "name": "Ritu Singh",
+      "relationship": "Spouse",
+      "phone": "+91 88776 65545"
+    }
+  ],
+  "payments": [],
+  "adminSettings": {
+    "password": "admin123",
+    "email": "admin@example.com",
+    "smtpUser": "",
+    "smtpPass": ""
+  },
+  "meetings": [],
+  "news": []
+}

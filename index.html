@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSociety - Society Management System</title>
+    <!-- Favicon / Tab Logo -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        // Immediate theme check to prevent flash of content
+        (function() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+            }
+        })();
+    </script>
+</head>
+<body>
+    <!-- App Container -->
+    <div id="app-container">
+        <!-- Main Header -->
+        <header class="app-header">
+            <div class="logo-area">
+                <span class="logo-icon">🛡️</span>
+                <h1>SmartSociety</h1>
+                <span class="logo-sub">Management Suite</span>
+            </div>
+
+            <!-- Global Role & Simulation Controller -->
+            <div class="control-panel-header">
+                <div class="role-selector-wrapper">
+                    <label for="role-toggle" class="control-label">View Mode:</label>
+                    <div class="toggle-button-group">
+                        <button id="view-resident-btn" class="role-btn active" onclick="switchRole('resident')">Resident Portal</button>
+                        <button id="view-admin-btn" class="role-btn" onclick="switchRole('admin')">Admin Control Panel</button>
+                    </div>
+                </div>
+
+                <div id="resident-selector-container" class="resident-selector-container">
+                    <label for="active-resident-select" class="control-label">Simulating Resident:</label>
+                    <select id="active-resident-select" onchange="changeActiveResident(this.value)">
+                        <!-- Dynamic options loaded via JS -->
+                    </select>
+                </div>
+
+                <!-- Resident Notification Bell (Visible only when resident view is active) -->
+                <div id="res-notification-container" class="res-notification-container hidden" style="margin-right: 0.5rem;">
+                    <button id="res-notification-btn" class="theme-toggle-btn" onclick="toggleResidentNotifications()" title="Notifications" aria-label="Notifications" style="position: relative;">
+                        <span>🔔</span>
+                        <span id="res-notification-badge" class="badge badge-danger badge-pill hidden" style="position: absolute; top: -5px; right: -5px; padding: 0.15rem 0.35rem; font-size: 0.7rem; border: 2px solid var(--bg-card);">0</span>
+                    </button>
+                    <!-- Notifications Dropdown -->
+                    <div id="res-notifications-dropdown" class="notifications-dropdown hidden">
+                        <div class="dropdown-header" style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1rem; border-bottom: 1px solid var(--border-color);">
+                            <h4 style="margin: 0; font-size: 0.95rem; font-weight: 700; color: var(--text-main);">Notifications</h4>
+                            <button onclick="markAllNotificationsAsRead()" style="background: none; border: none; color: var(--color-primary); font-size: 0.8rem; cursor: pointer; padding: 0; font-weight: 600;">Mark all read</button>
+                        </div>
+                        <div id="res-notifications-list" class="dropdown-list" style="max-height: 280px; overflow-y: auto; padding: 0.5rem 0;">
+                            <!-- Dynamic items -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Theme Toggle Button -->
+                <button id="theme-toggle-btn" class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Theme" aria-label="Toggle Theme">
+                    <span id="theme-icon">🌙</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- SOS Emergency Alert Banner (Admin Alert Only) -->
+        <div id="admin-emergency-banner" class="emergency-banner hidden" onclick="navigateToAdminSOS()">
+            <div class="banner-content">
+                <span class="blink-dot"></span>
+                <span class="banner-text"><strong>EMERGENCY PANIC ALERT ACTIVATED!</strong> Resident in <span id="emergency-flat-display">Flat 101</span> has triggered SOS. Click to view.</span>
+            </div>
+            <button class="close-banner-btn" onclick="event.stopPropagation(); dismissEmergencyBanner()">✕</button>
+        </div>
+
+        <main class="app-body">
+            <!-- ======================================================= -->
+            <!--                 RESIDENT PORTAL VIEW                    -->
+            <!-- ======================================================= -->
+            <section id="resident-portal" class="portal-section">
+                <!-- Resident Login Panel (Visible when !residentLoggedIn) -->
+                <div id="resident-login-panel" class="resident-login-panel hidden">
+                    <div class="card login-card">
+                        <div class="login-header">
+                            <span class="login-icon">🔑</span>
+                            <h2>Resident Login</h2>
+                            <p>Enter your Flat Number and registered Phone Number to access your resident portal.</p>
+                        </div>
+                        <form id="resident-login-form" onsubmit="handleResidentLogin(event)">
+                            <div class="form-group">
+                                <label for="res-login-flat">Flat Number</label>
+                                <input type="text" id="res-login-flat" required placeholder="e.g. 101-A">
+                            </div>
+                            <div class="form-group">
+                                <label for="res-login-phone">Registered Phone Number</label>
+                                <input type="text" id="res-login-phone" required placeholder="e.g. +91 98765 43210">
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-full" style="margin-top: 1rem;">Login to Portal</button>
+                        </form>
+                        <div class="demo-login-section">
+                            <h4>Quick Demo Login (Pre-seeded Accounts)</h4>
+                            <p class="text-xs text-muted" style="margin-bottom: 0.75rem;">Click a profile to auto-populate and login instantly:</p>
+                            <div id="demo-login-chips" class="demo-chips-container">
+                                <!-- Chips dynamically populated by JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resident Navigation Sidebar -->
+                <aside class="sidebar">
+                    <div class="resident-profile-badge card">
+                        <div class="avatar-circle" id="res-avatar">U</div>
+                        <div class="profile-info">
+                            <h3 id="res-name-badge">Loading...</h3>
+                            <p id="res-flat-badge">Flat --</p>
+                            <span id="res-occupancy-badge" class="badge">--</span>
+                        </div>
+                    </div>
+                    <nav class="sidebar-nav" style="flex: 1; display: flex; flex-direction: column;">
+                        <button class="nav-item active" onclick="switchResidentView('dashboard', this)">
+                            <span class="nav-icon">📊</span> Overview <span class="badge badge-danger badge-pill hidden" id="res-nav-meetings-badge" style="margin-left: auto;">0</span>
+                        </button>
+                        <button class="nav-item" onclick="switchResidentView('bills', this)">
+                            <span class="nav-icon">💳</span> Maintenance & Bills <span class="badge badge-danger badge-pill hidden" id="res-nav-bills-badge" style="margin-left: auto;">0</span>
+                        </button>
+                        <button class="nav-item" onclick="switchResidentView('booking', this)">
+                            <span class="nav-icon">🗓️</span> Book Amenities
+                        </button>
+                        <button class="nav-item" onclick="switchResidentView('visitors', this)">
+                            <span class="nav-icon">🎫</span> Visitor Pass
+                        </button>
+                        <button class="nav-item" onclick="switchResidentView('helpdesk', this)">
+                            <span class="nav-icon">🔧</span> Helpdesk & SOS
+                        </button>
+                        <button class="nav-item" onclick="switchResidentView('news', this)">
+                            <span class="nav-icon">📢</span> Society News <span class="badge badge-danger badge-pill hidden" id="res-nav-news-badge" style="margin-left: auto;">0</span>
+                        </button>
+                        <button class="nav-item logout-nav-item" onclick="handleResidentLogout()" style="margin-top: auto;">
+                            <span class="nav-icon">🚪</span> Log Out
+                        </button>
+                    </nav>
+                </aside>
+
+                <!-- Resident View Content Panel -->
+                <div class="main-content">
+                    <!-- SECTION: OVERVIEW / DASHBOARD -->
+                    <div id="res-view-dashboard" class="content-panel active">
+                        <div class="welcome-header">
+                            <h2>Welcome back, <span id="res-welcome-name">Resident</span>!</h2>
+                            <p>Here is your apartment's status overview for today.</p>
+                        </div>
+
+                        <div class="dashboard-grid">
+                            <!-- Quick Status Card -->
+                            <div class="card status-card">
+                                <h3>Occupancy Profile</h3>
+                                <div class="profile-details-grid">
+                                    <div class="detail-item">
+                                        <span class="label">Contact Info:</span>
+                                        <span class="value" id="res-phone-detail">Loading...</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="label">Occupancy:</span>
+                                        <span class="value" id="res-status-detail">Loading...</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="label">Approval Status:</span>
+                                        <span class="value" id="res-approved-detail">Loading...</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Vehicle Details Card -->
+                            <div class="card vehicle-card">
+                                <div class="card-header-action">
+                                    <h3>Registered Vehicles</h3>
+                                    <button class="btn btn-sm btn-outline" onclick="openVehicleModal()">Manage</button>
+                                </div>
+                                <div id="res-vehicles-list" class="vehicles-list">
+                                    <!-- Vehicles dynamic loading -->
+                                    <div class="empty-state">No vehicles registered.</div>
+                                </div>
+                            </div>
+
+                            <!-- Flat Members Details Card -->
+                            <div class="card members-card">
+                                <div class="card-header-action">
+                                    <h3>Flat Co-occupants / Members</h3>
+                                </div>
+                                <div id="res-members-list" class="vehicles-list">
+                                    <!-- Members dynamic loading -->
+                                    <div class="empty-state">No members registered.</div>
+                                </div>
+                            </div>
+
+                            <!-- Maintenance Bill Summary Card -->
+                            <div class="card bill-summary-card">
+                                <h3>Pending Dues</h3>
+                                <div class="dues-amount-block">
+                                    <span class="currency">₹</span>
+                                    <span class="amount" id="res-dues-amount">0</span>
+                                </div>
+                                <p id="res-dues-subtext">No pending payments for this month.</p>
+                                <button id="res-pay-dues-btn" class="btn btn-primary btn-full margin-t-1" onclick="switchResidentView('bills')">View Billing Ledger</button>
+                            </div>
+
+                            <!-- Upcoming Society Meetings Card -->
+                            <div class="card meetings-card-quick">
+                                <h3>Upcoming Society Meetings</h3>
+                                <div id="res-dashboard-meetings-list" class="vehicles-list" style="max-height: 250px; overflow-y: auto;">
+                                    <!-- Dynamic meetings list for resident -->
+                                    <div class="empty-state">No upcoming meetings scheduled.</div>
+                                </div>
+                            </div>
+
+                            <!-- Quick SOS Panic Button -->
+                            <div class="card sos-card-quick">
+                                <h3>Need Emergency Help?</h3>
+                                <p>Instantly alert security guard and admin panel.</p>
+                                <button class="btn btn-danger btn-sos btn-full pulse" onclick="triggerSOS()">
+                                    <span class="sos-glow"></span>
+                                    🚨 TRIGGER SOS
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION: MAINTENANCE & BILLS -->
+                    <div id="res-view-bills" class="content-panel">
+                        <div class="panel-header">
+                            <h2>Maintenance & Billing Ledger</h2>
+                            <p>View your billing history, penalty breakdown, and download receipts.</p>
+                        </div>
+
+                        <div class="billing-container">
+                            <div class="bill-overview-card card flex-row justify-between align-center">
+                                <div>
+                                    <h4 class="text-secondary text-sm uppercase">Total Outstandings</h4>
+                                    <div class="amount-accent text-xxl font-bold" id="res-total-unpaid-amount">₹0.00</div>
+                                    <p id="res-bill-count-status" class="text-xs text-muted">0 unpaid invoices</p>
+                                </div>
+                                <button id="res-pay-all-btn" class="btn btn-primary" onclick="initiatePayment()">Pay All Outstanding</button>
+                            </div>
+
+                             <div class="card margin-t-15">
+                                <h3>Invoice & Payment History</h3>
+                                <div class="table-responsive">
+                                    <table class="table" id="res-bills-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Bill Cycle</th>
+                                                <th>Base Fee</th>
+                                                <th>Missed Months</th>
+                                                <th>Penalty</th>
+                                                <th>Total Fee</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="res-bills-list-body">
+                                            <!-- Dynamically generated bills -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="card margin-t-15">
+                                <h3>Transaction History</h3>
+                                <p class="text-xs text-secondary margin-b-1">List of all simulated payment transactions and their completion status.</p>
+                                <div class="table-responsive">
+                                    <table class="table" id="res-transactions-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Transaction Ref</th>
+                                                <th>Bill Cycle</th>
+                                                <th>Amount</th>
+                                                <th>Status</th>
+                                                <th>Completion Date</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="res-transactions-list-body">
+                                            <!-- Dynamically generated transactions -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION: FACILITY BOOKINGS -->
+                    <div id="res-view-booking" class="content-panel">
+                        <div class="panel-header">
+                            <h2>Resource & Amenity Booking</h2>
+                            <p>Book society-managed venues. Reservations require at least 5 days notice.</p>
+                        </div>
+
+                        <div class="booking-grid">
+                            <!-- Booking Form Card -->
+                            <div class="card">
+                                <h3>New Reservation</h3>
+                                <form id="amenity-booking-form" onsubmit="handleAmenityBooking(event)">
+                                    <div class="form-group">
+                                        <label for="booking-amenity">Select Facility</label>
+                                        <select id="booking-amenity" required>
+                                            <option value="Party Hall">Party Hall (Indoor, AC)</option>
+                                            <option value="Turf">Sports Turf (Outdoor)</option>
+                                            <option value="Gymnasium">Gymnasium (Private Session)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="booking-date">Date of Event</label>
+                                        <input type="date" id="booking-date" required>
+                                        <small class="text-muted block margin-t-05">⚠️ Bookings must be made 5 days in advance.</small>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-full margin-t-1">Submit Booking Request</button>
+                                </form>
+                            </div>
+
+                            <!-- Booking History Card -->
+                            <div class="card">
+                                <h3>Booking Statuses</h3>
+                                <div class="booking-history-list" id="res-booking-history">
+                                    <!-- Dynamic bookings -->
+                                    <div class="empty-state">No bookings found.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION: VISITOR PASSES -->
+                    <div id="res-view-visitors" class="content-panel">
+                        <div class="panel-header">
+                            <h2>Visitor Management</h2>
+                            <p>Register visitors in advance to generate secure entry passes for gate authorization.</p>
+                        </div>
+
+                        <div class="visitor-grid">
+                            <!-- Visitor Registration Form -->
+                            <div class="card">
+                                <h3>Create Gate Pass</h3>
+                                <form id="visitor-pass-form" onsubmit="handleVisitorPassCreation(event)">
+                                    <div class="form-group">
+                                        <label for="visitor-name">Visitor's Full Name</label>
+                                        <input type="text" id="visitor-name" placeholder="E.g., John Doe" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="visitor-category">Category</label>
+                                        <select id="visitor-category" required>
+                                            <option value="Guest">Personal Guest / Family</option>
+                                            <option value="Delivery">Delivery Executive (Amazon, Zomato, etc.)</option>
+                                            <option value="Service">Service Vendor (Plumber, Electrician, Maid)</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-full margin-t-1">Generate 6-Digit Passcode</button>
+                                </form>
+                            </div>
+
+                            <!-- Active Visitor Pass History -->
+                            <div class="card">
+                                <h3>Active Entry Passes</h3>
+                                <div class="passes-container" id="res-active-passes">
+                                    <!-- Dynamic passes list -->
+                                    <div class="empty-state">No active visitor passes.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION: HELPDESK & SOS -->
+                    <div id="res-view-helpdesk" class="content-panel">
+                        <div class="panel-header">
+                            <h2>Emergency & Maintenance Support</h2>
+                            <p>Submit repair tickets to management or trigger a high-alert SOS for help.</p>
+                        </div>
+
+                        <div class="helpdesk-grid">
+                            <!-- Support Ticket Form -->
+                            <div class="card">
+                                <h3>Raise Maintenance Ticket</h3>
+                                <form id="helpdesk-ticket-form" onsubmit="handleTicketSubmission(event)">
+                                    <div class="form-group">
+                                        <label for="ticket-category">Problem Category</label>
+                                        <select id="ticket-category" required>
+                                            <option value="Plumbing">Plumbing Issues</option>
+                                            <option value="Electrical Fault">Electrical Fault</option>
+                                            <option value="Carpentry">Carpentry & Woodwork</option>
+                                            <option value="Elevator Malfunction">Elevator Malfunction</option>
+                                            <option value="Infrastructure Damage">Infrastructure Damage</option>
+                                            <option value="Parking Disputes">Parking Disputes</option>
+                                            <option value="Visitor Management Issues">Visitor Management Issues</option>
+                                            <option value="Property Violations">Property Violations</option>
+                                            <option value="Noise Complaints">Noise Complaints</option>
+                                            <option value="Pet-Related Issues">Pet-Related Issues</option>
+                                            <option value="Waste Management">Waste Management</option>
+                                            <option value="Terrace Access Unauthorized">Terrace Access Unauthorized</option>
+                                            <option value="Common Area Damages">Common Area Damages</option>
+                                            <option value="Illegal Commercial Activity">Illegal Commercial Activity</option>
+                                            <option value="Fire & Gas Safety Hazard">Fire & Gas Safety Hazard</option>
+                                            <option value="Medical & Mobility Request">Medical & Mobility Request</option>
+                                            <option value="Pest Control">Pest Control</option>
+                                            <option value="Car Washers & Drivers Nuisance">Car Washers & Drivers Nuisance</option>
+                                            <option value="Water Scarcity & Tankers">Water Scarcity & Tankers</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ticket-priority">Priority</label>
+                                        <select id="ticket-priority" required>
+                                            <option value="low">Low (General Repair)</option>
+                                            <option value="medium">Medium (Needs Attention)</option>
+                                            <option value="urgent">Urgent (Major Leak/Shortage) [Red Flagged]</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ticket-description">Description of Issue</label>
+                                        <textarea id="ticket-description" placeholder="Provide detailed location and description..." required rows="4"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-full">Submit Helpdesk Ticket</button>
+                                </form>
+                            </div>
+
+                            <!-- SOS Card -->
+                            <div class="card sos-card text-center flex-column justify-center align-center">
+                                <div class="sos-icon-large">🚨</div>
+                                <h2>SOS Panic Button</h2>
+                                <p class="text-sm text-muted margin-b-15">Triggers high-priority flashing siren alerts on Admin panel. Guard will be dispatched to your flat immediately.</p>
+                                <button class="btn btn-danger btn-sos-massive pulse" onclick="triggerSOS()">
+                                    <span class="sos-glow"></span>
+                                    ACTIVATE PANIC ALERT
+                                </button>
+                                <p class="text-xs text-secondary margin-t-1">For critical emergencies only (Fire, Intruder, Medical Alert)</p>
+                            </div>
+                        </div>
+
+                        <div class="card margin-t-15">
+                            <h3>My Helpdesk Tickets</h3>
+                            <div class="table-responsive">
+                                <table class="table" id="res-tickets-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Ticket ID</th>
+                                            <th>Category</th>
+                                            <th>Description</th>
+                                            <th>Priority</th>
+                                            <th>Status</th>
+                                            <th>Assigned Vendor</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="res-tickets-list-body">
+                                        <!-- Dynamic tickets -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION: SOCIETY NEWS -->
+                    <div id="res-view-news" class="content-panel">
+                        <div class="panel-header">
+                            <h2>📢 Society News & Bulletins</h2>
+                            <p>Official notices and announcements from the Resident Welfare Association (RWA).</p>
+                        </div>
+                        <div class="card" style="padding: 1.5rem; min-height: 400px; display: flex; flex-direction: column;">
+                            <div class="news-chat-header" style="display: flex; align-items: center; gap: 0.75rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color); margin-bottom: 1rem;">
+                                <div class="avatar-circle" style="width: 40px; height: 40px; font-size: 1.1rem; background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%); box-shadow: none;">📣</div>
+                                <div>
+                                    <h4 style="margin: 0; font-weight: 700;">RWA Broadcast Channel</h4>
+                                    <p style="margin: 0; font-size: 0.75rem; color: var(--text-muted);">Only administrators can send messages to this group.</p>
+                                </div>
+                            </div>
+                            <div id="res-news-feed" style="flex: 1; display: flex; flex-direction: column; gap: 1rem; overflow-y: auto; max-height: 500px; padding-right: 0.5rem;">
+                                <!-- Dynamic news feed items -->
+                                <div class="empty-state">No announcements broadcasted yet.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ======================================================= -->
+            <!--                   ADMIN PORTAL VIEW                     -->
+            <!-- ======================================================= -->
+            <section id="admin-portal" class="portal-section hidden">
+                <!-- Admin Navigation Sidebar -->
+                <aside class="sidebar">
+                    <div class="resident-profile-badge card admin-badge">
+                        <div class="avatar-circle font-bold">A</div>
+                        <div class="profile-info">
+                            <h3>Admin Workspace</h3>
+                            <p>Society Manager</p>
+                            <span class="badge badge-admin">Master Control</span>
+                        </div>
+                    </div>
+                    <nav class="sidebar-nav" style="flex: 1; display: flex; flex-direction: column;">
+                        <button class="nav-item active" onclick="switchAdminView('dashboard', this)">
+                            <span class="nav-icon">📈</span> Admin Overview
+                        </button>
+                        <button class="nav-item" onclick="switchAdminView('approvals', this)">
+                            <span class="nav-icon">👤</span> Resident Approvals
+                        </button>
+                        <button class="nav-item" onclick="switchAdminView('finance', this)">
+                            <span class="nav-icon">🏦</span> Defaulter Ledger
+                        </button>
+                        <button class="nav-item" onclick="switchAdminView('moderation', this)">
+                            <span class="nav-icon">🛠️</span> Bookings & Tickets
+                        </button>
+                        <button class="nav-item" id="admin-nav-sos" onclick="switchAdminView('sos-logs', this)">
+                            <span class="nav-icon">🚨</span> Emergency Logs <span class="badge badge-danger badge-pill hidden" id="admin-sos-pill">0</span>
+                        </button>
+                        <button class="nav-item" onclick="switchAdminView('vendors', this)">
+                            <span class="nav-icon">👥</span> Manage Vendors
+                        </button>
+                        <button class="nav-item" onclick="switchAdminView('news', this)">
+                            <span class="nav-icon">📢</span> RWA Broadcast
+                        </button>
+                        <button class="nav-item" onclick="switchAdminView('settings', this)" style="margin-top: auto;">
+                            <span class="nav-icon">⚙️</span> Admin Settings
+                        </button>
+                        <button class="nav-item logout-nav-item" onclick="handleAdminLogout()">
+                            <span class="nav-icon">🚪</span> Log Out
+                        </button>
+                    </nav>
+                </aside>
+
+                <!-- Admin View Content Panel -->
+                <div class="main-content">
+                    <!-- SECTION: ADMIN OVERVIEW -->
+                    <div id="admin-view-dashboard" class="content-panel active">
+                        <div class="welcome-header">
+                            <h2>Society Operations Dashboard</h2>
+                            <p>Overview of residents status, outstanding fees, and unresolved items.</p>
+                        </div>
+
+                        <!-- Dashboard Stats Cards -->
+                        <div class="stats-row">
+                            <div class="stats-card card flex-1">
+                                <span class="stat-title">Approved Residents</span>
+                                <span class="stat-value" id="stat-residents-count">0</span>
+                                <span class="stat-subtext" id="stat-residents-pending">0 Pending Approvals</span>
+                            </div>
+                            <div class="stats-card card flex-1">
+                                <span class="stat-title">Monthly Collections</span>
+                                <span class="stat-value" id="stat-collections-collected">₹0</span>
+                                <span class="stat-subtext text-warning" id="stat-collections-outstanding">₹0 Uncollected</span>
+                            </div>
+                            <div class="stats-card card flex-1">
+                                <span class="stat-title">Pending Facility Bookings</span>
+                                <span class="stat-value" id="stat-bookings-pending">0</span>
+                                <span class="stat-subtext">Awaiting Approval</span>
+                            </div>
+                            <div class="stats-card card flex-1">
+                                <span class="stat-title">Open Tickets</span>
+                                <span class="stat-value" id="stat-tickets-open">0</span>
+                                <span class="stat-subtext text-danger" id="stat-tickets-urgent">0 Urgent Red Flags</span>
+                            </div>
+                        </div>
+
+                        <div class="admin-dashboard-layout margin-t-15">
+                            <!-- Quick Actions / SOS panel -->
+                            <div class="card flex-1">
+                                <div class="card-header-action border-b margin-b-1">
+                                    <h3>Live Emergency Panel</h3>
+                                    <button class="btn btn-sm btn-outline btn-danger" onclick="clearAllResolvedEmergency()">Archive Resolved</button>
+                                </div>
+                                <div class="emergency-monitor-list" id="admin-dashboard-sos-list">
+                                    <!-- Dynamic live SOS entries -->
+                                    <div class="empty-state text-success font-semibold">🟢 All residents secure. No active SOS signals.</div>
+                                </div>
+                            </div>
+
+                            <!-- Pending Approvals Quick List -->
+                            <div class="card flex-1">
+                                <div class="card-header-action border-b margin-b-1">
+                                    <h3>Quick Verifications</h3>
+                                    <button class="btn btn-sm btn-outline" onclick="switchAdminView('approvals')">View Directory</button>
+                                </div>
+                                <div class="verifications-list" id="admin-dashboard-approvals-list">
+                                    <!-- Dynamic directory verifications -->
+                                    <div class="empty-state text-muted">All registration requests verified.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="admin-dashboard-layout margin-t-15">
+                            <!-- Arrange Meeting Form Card -->
+                            <div class="card flex-1">
+                                <div class="card-header-action border-b margin-b-1">
+                                    <h3>Arrange Society Meeting</h3>
+                                </div>
+                                <form id="admin-schedule-meeting-form" onsubmit="handleAdminScheduleMeeting(event)">
+                                    <div class="form-group">
+                                        <label for="meet-title">Meeting Title / Subject</label>
+                                        <input type="text" id="meet-title" required placeholder="e.g. Society AGM, Parking discussion">
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group flex-1">
+                                            <label for="meet-date">Date</label>
+                                            <input type="date" id="meet-date" required>
+                                        </div>
+                                        <div class="form-group flex-1">
+                                            <label for="meet-time">Time</label>
+                                            <input type="time" id="meet-time" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group flex-1">
+                                            <label for="meet-target-group">Target Audience</label>
+                                            <select id="meet-target-group" required onchange="toggleMeetingTargetOptions(this.value)">
+                                                <option value="all">📢 All Residents (General Meeting)</option>
+                                                <option value="committee">👥 Committee Members Only</option>
+                                                <option value="individual">🔒 Specific Resident (Private Meeting)</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group flex-1 hidden" id="meet-resident-select-group">
+                                            <label for="meet-target-resident">Target Resident</label>
+                                            <select id="meet-target-resident">
+                                                <!-- Dynamically loaded -->
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="meet-agenda">Agenda / Description</label>
+                                        <textarea id="meet-agenda" required rows="3" placeholder="Describe the discussion agenda..."></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-full">Arrange Meeting</button>
+                                </form>
+                            </div>
+
+                            <!-- Scheduled Meetings List Card -->
+                            <div class="card flex-1">
+                                <div class="card-header-action border-b margin-b-1">
+                                    <h3>Scheduled Meetings & Messages</h3>
+                                </div>
+                                <div class="verifications-list" id="admin-scheduled-meetings-list" style="max-height: 380px; overflow-y: auto;">
+                                    <!-- Dynamic list -->
+                                    <div class="empty-state text-muted">No upcoming meetings scheduled.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION: DIRECTORY & APPROVALS -->
+                    <div id="admin-view-approvals" class="content-panel">
+                        <div class="panel-header">
+                            <h2>Resident Directory & Access Approvals</h2>
+                            <p>Verify applicant profiles, manage vehicle plates, and authorize access keys.</p>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header-action border-b margin-b-1">
+                                <h3>Society Resident Registry</h3>
+                                <button class="btn btn-primary btn-sm" onclick="openNewResidentModal()">Add Resident</button>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table" id="admin-residents-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Resident Name</th>
+                                            <th>Flat No.</th>
+                                            <th>Contact</th>
+                                            <th>Occupancy</th>
+                                            <th>Vehicles</th>
+                                            <th>Access Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="admin-residents-list-body">
+                                        <!-- Dynamic resident list -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION: FINANCIAL AUDIT & DEFAULTER LEDGER -->
+                    <div id="admin-view-finance" class="content-panel">
+                        <div class="panel-header">
+                            <h2>Financial Defaulter Ledger & Auditing</h2>
+                            <p>Monitor collections, review outstanding bills, waive penalties, and export records.</p>
+                        </div>
+
+                        <div class="stats-row">
+                            <div class="stats-card card flex-1">
+                                <span class="stat-title">Base Collections (Paid)</span>
+                                <span class="stat-value text-success" id="finance-total-paid">₹0</span>
+                            </div>
+                            <div class="stats-card card flex-1">
+                                <span class="stat-title">Outstanding (Unpaid Base)</span>
+                                <span class="stat-value text-warning" id="finance-total-unpaid">₹0</span>
+                            </div>
+                            <div class="stats-card card flex-1">
+                                <span class="stat-title">Accrued Penalties</span>
+                                <span class="stat-value text-danger" id="finance-total-penalties">₹0</span>
+                            </div>
+                        </div>
+
+                        <div class="card margin-t-15">
+                            <div class="card-header-action border-b margin-b-1">
+                                <h3>Defaulter & Ledger Accounts</h3>
+                                <button class="btn btn-outline btn-sm" onclick="exportFinancialLedger()">📥 Export Excel/CSV</button>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table" id="admin-finance-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Resident / Flat</th>
+                                            <th>Cycle Month</th>
+                                            <th>Base Fee</th>
+                                            <th>Missed Months</th>
+                                            <th>Penalty</th>
+                                            <th>Total Dues</th>
+                                            <th>Status</th>
+                                            <th>Waiver Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="admin-finance-list-body">
+                                        <!-- Dynamic ledger records -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION: BOOKINGS & TICKETS MODERATION -->
+                    <div id="admin-view-moderation" class="content-panel">
+                        <div class="panel-header">
+                            <h2>Facility Bookings & Helpdesk Tickets</h2>
+                            <p>Moderate booking requests and assign vendors to repair tickets.</p>
+                        </div>
+
+                        <div class="moderation-grid">
+                            <!-- Bookings approvals -->
+                            <div class="card flex-1">
+                                <h3>Amenity Bookings Approvals</h3>
+                                <div class="admin-bookings-list" id="admin-bookings-list-container">
+                                    <!-- Dynamic bookings to review -->
+                                    <div class="empty-state">No pending bookings to approve.</div>
+                                </div>
+                            </div>
+
+                            <!-- Helpdesk assignment -->
+                            <div class="card flex-1">
+                                <h3>Helpdesk Repair Tickets</h3>
+                                <div class="admin-tickets-list" id="admin-tickets-list-container">
+                                    <!-- Dynamic ticket assignment -->
+                                    <div class="empty-state">All tickets resolved!</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION: EMERGENCY SOS LOGS -->
+                    <div id="admin-view-sos-logs" class="content-panel">
+                        <div class="panel-header">
+                            <h2>SOS Emergency Logs</h2>
+                            <p>Historic and active record of panic buttons pressed by residents.</p>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header-action border-b margin-b-1">
+                                <h3>Emergency Incidents Monitor</h3>
+                                <button class="btn btn-sm btn-outline" onclick="clearAllResolvedEmergency()">Clear Resolved Logs</button>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table" id="admin-emergency-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Log ID</th>
+                                            <th>Resident</th>
+                                            <th>Flat No.</th>
+                                            <th>Time Triggered</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="admin-emergency-list-body">
+                                        <!-- Dynamic emergency events -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION: MANAGE VENDORS -->
+                    <div id="admin-view-vendors" class="content-panel">
+                        <div class="panel-header">
+                            <h2>Manage Service Vendors</h2>
+                            <p>Register new vendors or remove existing ones from the database.</p>
+                        </div>
+
+                        <div class="booking-grid">
+                            <!-- Add Vendor Form -->
+                            <div class="card">
+                                <h3>Add New Vendor</h3>
+                                <form id="admin-add-vendor-form" onsubmit="handleAdminAddVendor(event)">
+                                    <div class="form-group">
+                                        <label for="adm-vendor-name">Vendor Name</label>
+                                        <input type="text" id="adm-vendor-name" placeholder="E.g., Manoj Desai" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="adm-vendor-category">Profession / Category</label>
+                                        <select id="adm-vendor-category" required>
+                                            <option value="">Select Profession...</option>
+                                            <option value="Civil & Masonry">Civil & Masonry</option>
+                                            <option value="Carpentry">Carpentry</option>
+                                            <option value="Plumbing">Plumbing</option>
+                                            <option value="Water Supply & Borewell">Water Supply & Borewell</option>
+                                            <option value="Electrical">Electrical</option>
+                                            <option value="Fire & Gas Safety">Fire & Gas Safety</option>
+                                            <option value="Housekeeping & Waste">Housekeeping & Waste</option>
+                                            <option value="Pest Control">Pest Control</option>
+                                            <option value="Security & Access">Security & Access</option>
+                                            <option value="Accounting & Billing">Accounting & Billing</option>
+                                            <option value="Facility Management">Facility Management</option>
+                                            <option value="Medical Assistance">Medical Assistance</option>
+                                            
+                                            <!-- Additional Categories matching problem categories -->
+                                            <option value="Infrastructure Damage">Infrastructure Damage</option>
+                                            <option value="Parking Disputes">Parking Disputes</option>
+                                            <option value="Visitor Management Issues">Visitor Management Issues</option>
+                                            <option value="Property Violations">Property Violations</option>
+                                            <option value="Noise Complaints">Noise Complaints</option>
+                                            <option value="Pet-Related Issues">Pet-Related Issues</option>
+                                            <option value="Waste Management">Waste Management</option>
+                                            <option value="Terrace Access Unauthorized">Terrace Access Unauthorized</option>
+                                            <option value="Common Area Damages">Common Area Damages</option>
+                                            <option value="Illegal Commercial Activity">Illegal Commercial Activity</option>
+                                            <option value="Fire & Gas Safety Hazard">Fire & Gas Safety Hazard</option>
+                                            <option value="Medical & Mobility Request">Medical & Mobility Request</option>
+                                            <option value="Car Washers & Drivers Nuisance">Car Washers & Drivers Nuisance</option>
+                                            <option value="Water Scarcity & Tankers">Water Scarcity & Tankers</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-full margin-t-1">Register Vendor</button>
+                                </form>
+                            </div>
+
+                            <!-- Vendor List -->
+                            <div class="card">
+                                <h3>Current Vendors Directory</h3>
+                                <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Category</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="admin-vendors-list-body">
+                                            <!-- Dynamic vendors loading -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION: ADMIN SETTINGS -->
+                    <div id="admin-view-settings" class="content-panel">
+                        <div class="panel-header">
+                            <h2>Admin Workspaces & System Settings</h2>
+                            <p>Manage administrator credentials, change passwords, and configure Gmail SMTP settings.</p>
+                        </div>
+
+                        <div class="helpdesk-grid">
+                            <!-- Change Password Card -->
+                            <div class="card">
+                                <h3>Change Admin Password</h3>
+                                <form id="admin-change-password-form" onsubmit="handleAdminChangePassword(event)">
+                                    <div class="form-group">
+                                        <label for="set-current-pass">Current Password</label>
+                                        <input type="password" id="set-current-pass" required placeholder="••••••••">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="set-new-pass">New Password</label>
+                                        <input type="password" id="set-new-pass" required placeholder="Min 4 characters">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="set-confirm-pass">Confirm New Password</label>
+                                        <input type="password" id="set-confirm-pass" required placeholder="••••••••">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-full">Update Password</button>
+                                </form>
+                            </div>
+
+                            <!-- SMTP Settings Card -->
+                            <div class="card">
+                                <h3>Gmail SMTP Configuration</h3>
+                                <p class="text-xs text-secondary margin-b-1" style="line-height: 1.4;">Configure your own Gmail account to send password reset verification codes directly from the browser without editing code.</p>
+                                <form id="admin-smtp-settings-form" onsubmit="handleAdminSaveSMTPSettings(event)">
+                                    <div class="form-group">
+                                        <label for="set-admin-email">Admin Recipient Email</label>
+                                        <input type="email" id="set-admin-email" required placeholder="admin@example.com">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="set-smtp-user">Sender Gmail Address</label>
+                                        <input type="email" id="set-smtp-user" placeholder="E.g. sender@gmail.com (Optional)">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="set-smtp-pass">Gmail App Password</label>
+                                        <input type="password" id="set-smtp-pass" placeholder="E.g. 16-character code (Optional)">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-full">Save System Settings</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION: ADMIN NEWS BROADCAST -->
+                    <div id="admin-view-news" class="content-panel">
+                        <div class="panel-header">
+                            <h2>📢 RWA News Broadcast Channel</h2>
+                            <p>Send society-related announcements and chaos updates to all residents.</p>
+                        </div>
+                        <div class="helpdesk-grid">
+                            <!-- Post Announcement Card -->
+                            <div class="card">
+                                <h3>Broadcast New Announcement</h3>
+                                <form id="admin-post-news-form" onsubmit="handleAdminPostNews(event)">
+                                    <div class="form-group">
+                                        <label for="news-title">Notice Title</label>
+                                        <input type="text" id="news-title" placeholder="e.g. Water Tanker Delay, Elevator Service" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="news-content">Update Content / Details</label>
+                                        <textarea id="news-content" rows="6" placeholder="Provide full details of the chaos or update here..." required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-full">📢 Broadcast to Residents</button>
+                                </form>
+                            </div>
+                            
+                            <!-- Announcements Feed Manager -->
+                            <div class="card">
+                                <h3>Active Broadcast Log</h3>
+                                <div class="admin-tickets-list" id="admin-news-list" style="max-height: 400px; overflow-y: auto;">
+                                    <!-- Dynamic broadcast log updates -->
+                                    <div class="empty-state">No announcements broadcasted yet.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- ======================================================= -->
+    <!--                       MODALS                            -->
+    <!-- ======================================================= -->
+
+    <!-- Vehicle Management Modal (Resident) -->
+    <div id="vehicle-modal" class="modal-overlay hidden">
+        <div class="modal card">
+            <div class="modal-header">
+                <h2>Manage Vehicles</h2>
+                <button class="modal-close-btn" onclick="closeVehicleModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <form id="vehicle-add-form" onsubmit="handleVehicleAddition(event)">
+                    <div class="form-row">
+                        <div class="form-group flex-1">
+                            <label for="veh-plate">License Plate Number</label>
+                            <input type="text" id="veh-plate" placeholder="E.g., MH-12-AB-1234" required pattern="^[a-zA-Z0-9- ]{5,15}$">
+                        </div>
+                        <div class="form-group flex-initial">
+                            <label for="veh-type">Type</label>
+                            <select id="veh-type" required>
+                                <option value="Car">Car</option>
+                                <option value="Bike">Bike</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary margin-t-05">Add Vehicle</button>
+                </form>
+                <div class="margin-t-1 border-t padding-t-1">
+                    <h3>Current Registered Vehicles</h3>
+                    <div id="modal-vehicles-list" class="vehicles-list-mini">
+                        <!-- Dynamic list -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pay Now Gateway Modal (Resident) -->
+    <div id="payment-modal" class="modal-overlay hidden">
+        <div class="modal card payment-modal-card">
+            <div class="modal-header">
+                <h2>Simulated Payment Gateway</h2>
+                <button class="modal-close-btn" onclick="closePaymentModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="bill-summary-invoice card bg-depth margin-b-1">
+                    <h3>Invoice Summary</h3>
+                    <div class="invoice-row flex-row justify-between">
+                        <span>Maintenance Base Fee:</span>
+                        <span id="pay-base-fee">₹0.00</span>
+                    </div>
+                    <div class="invoice-row flex-row justify-between text-danger font-semibold">
+                        <span>Late Penalties (Unpaid Dues):</span>
+                        <span id="pay-penalty-fee">₹0.00</span>
+                    </div>
+                    <div class="invoice-row flex-row justify-between border-t padding-t-05 margin-t-05 font-bold text-lg">
+                        <span>Total Payable:</span>
+                        <span id="pay-total-fee" class="text-accent">₹0.00</span>
+                    </div>
+                </div>
+
+                <!-- Interactive Credit Card Graphic -->
+                <div class="credit-card-container">
+                    <div class="credit-card">
+                        <div class="card-front">
+                            <div class="card-glow-dot"></div>
+                            <div class="card-chip-slot">
+                                <div class="card-chip"></div>
+                            </div>
+                            <div class="card-logo">VISA</div>
+                            <div class="card-number-display" id="cc-num-display">•••• •••• •••• ••••</div>
+                            <div class="card-bottom-row">
+                                <div class="card-holder-display">
+                                    <span class="card-label">Card Holder</span>
+                                    <div id="cc-name-display" class="card-holder-name">Resident Name</div>
+                                </div>
+                                <div class="card-expiry-display">
+                                    <span class="card-label">Expires</span>
+                                    <div id="cc-exp-display" class="card-expiry-date">MM/YY</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <form id="payment-gateway-form" onsubmit="handlePaymentSubmit(event)">
+                    <div class="form-group">
+                        <label for="card-holder">Cardholder Name</label>
+                        <input type="text" id="card-holder" placeholder="Aarav Sharma" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="card-number">Card Number</label>
+                        <input type="text" id="card-number" placeholder="4111 2222 3333 4444" required pattern="^[0-9\s]{16,19}$" maxlength="19">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group flex-1">
+                            <label for="card-expiry">Expiry Date</label>
+                            <input type="text" id="card-expiry" placeholder="MM/YY" required pattern="^(0[1-9]|1[0-2])\/[0-9]{2}$" maxlength="5">
+                        </div>
+                        <div class="form-group flex-1">
+                            <label for="card-cvv">CVV</label>
+                            <input type="password" id="card-cvv" placeholder="***" required pattern="^[0-9]{3}$" maxlength="3">
+                        </div>
+                    </div>
+                    <div id="payment-loader" class="payment-loader hidden">
+                        <div class="spinner"></div>
+                        <span>Processing payment securely, please wait...</span>
+                    </div>
+                    <button type="submit" id="pay-confirm-btn" class="btn btn-primary btn-full margin-t-1">Simulate Secure Payment</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Printable Invoice & Receipt Modal -->
+    <div id="receipt-modal" class="modal-overlay hidden">
+        <div class="modal card receipt-modal-card">
+            <div class="modal-header no-print">
+                <h2>Invoice / Receipt</h2>
+                <div class="header-actions">
+                    <button class="btn btn-outline btn-sm" onclick="window.print()">Print Receipt</button>
+                    <button class="modal-close-btn" onclick="closeReceiptModal()">✕</button>
+                </div>
+            </div>
+            <div class="modal-body printable-invoice" id="printable-receipt-content">
+                <!-- Dynamic Invoice template will load here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Register Resident Modal -->
+    <div id="admin-resident-modal" class="modal-overlay hidden">
+        <div class="modal card">
+            <div class="modal-header">
+                <h2>Add Resident Account</h2>
+                <button class="modal-close-btn" onclick="closeNewResidentModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <form id="admin-add-resident-form" onsubmit="handleAdminAddResident(event)">
+                    <div class="form-group">
+                        <label for="adm-res-name">Full Name</label>
+                        <input type="text" id="adm-res-name" required placeholder="E.g., Neha Gupta">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group flex-1">
+                            <label for="adm-res-flat">Flat Number</label>
+                            <input type="text" id="adm-res-flat" required placeholder="E.g., 502-B">
+                        </div>
+                        <div class="form-group flex-1">
+                            <label for="adm-res-contact">Contact Phone</label>
+                            <input type="text" id="adm-res-contact" required placeholder="E.g., +91 9876543210">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group flex-1">
+                            <label for="adm-res-occupancy">Occupancy Type</label>
+                            <select id="adm-res-occupancy" required>
+                                <option value="owner">Owner (Green Badge)</option>
+                                <option value="tenant">Tenant/Rental (Yellow Badge)</option>
+                            </select>
+                        </div>
+                        <div class="form-group flex-1">
+                            <label for="adm-res-status">Database Approval</label>
+                            <select id="adm-res-status" required>
+                                <option value="approved">Approved / Authorized</option>
+                                <option value="pending">Pending Admin Verification</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row" style="margin-top: 0.5rem; margin-bottom: 0.5rem;">
+                        <div class="form-group flex-1" style="display: flex; align-items: center; gap: 0.5rem; flex-direction: row; margin-bottom: 0;">
+                            <input type="checkbox" id="adm-res-committee" style="width: auto; height: 18px; margin: 0; cursor: pointer;">
+                            <label for="adm-res-committee" style="margin-bottom: 0; cursor: pointer; font-weight: 500;">Committee Member</label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full margin-t-1">Register Profile</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resident Members Management Modal (Admin) -->
+    <div id="admin-members-modal" class="modal-overlay hidden">
+        <div class="modal card">
+            <div class="modal-header">
+                <h2>Manage Resident Members</h2>
+                <button class="modal-close-btn" onclick="closeAdminMembersModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="resident-flat-badge margin-b-1" style="background: var(--bg-profile-badge); padding: 0.75rem 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+                    <h4 id="member-modal-resident-name" style="margin: 0; font-weight: 600;">Resident: Loading...</h4>
+                    <p id="member-modal-resident-flat" style="margin: 2px 0 0 0; font-size: 0.8rem; color: var(--text-secondary);">Flat: Loading...</p>
+                </div>
+                <form id="member-add-form" onsubmit="handleAdminAddMember(event)">
+                    <div class="form-row">
+                        <div class="form-group flex-1">
+                            <label for="mem-name">Member Name</label>
+                            <input type="text" id="mem-name" placeholder="E.g., Priya Sharma" required>
+                        </div>
+                        <div class="form-group flex-initial" style="width: 140px;">
+                            <label for="mem-relation">Relationship</label>
+                            <select id="mem-relation" onchange="toggleCustomRelationInput(this.value)" required>
+                                <option value="Spouse">Spouse</option>
+                                <option value="Partner">Partner</option>
+                                <option value="Child">Child</option>
+                                <option value="Parent">Parent</option>
+                                <option value="Sibling">Sibling</option>
+                                <option value="Roommate">Roommate</option>
+                                <option value="Colleague">Colleague</option>
+                                <option value="Relative">Relative</option>
+                                <option value="Staff">Staff/Help</option>
+                                <option value="Other">Other (Specify...)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="custom-relation-group" class="form-group hidden">
+                        <label for="mem-relation-custom">Specify Relationship</label>
+                        <input type="text" id="mem-relation-custom" placeholder="E.g., Fiancé, Roommate Partner">
+                    </div>
+                    <div class="form-group">
+                        <label for="mem-phone">Phone Number (Optional)</label>
+                        <input type="text" id="mem-phone" placeholder="E.g., +91 9876543210">
+                    </div>
+                    <button type="submit" class="btn btn-primary margin-t-05">Add Member</button>
+                </form>
+                <div class="margin-t-1 border-t padding-t-1">
+                    <h3>Registered Co-occupants / Members</h3>
+                    <div id="modal-members-list" class="vehicles-list-mini" style="display: flex; flex-direction: column; gap: 0.75rem; max-height: 250px; overflow-y: auto; padding-right: 4px;">
+                        <!-- Dynamic list of members loaded via JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Authentication Modal (Password & Reset System) -->
+    <div id="admin-auth-overlay" class="modal-overlay hidden">
+        <div class="modal card auth-modal-card" style="max-width: 400px; border-radius: var(--radius-md); padding: 2rem;">
+            
+            <!-- CARD 1: LOGIN -->
+            <div id="admin-login-card">
+                <div class="modal-header" style="justify-content: center; margin-bottom: 1.5rem; border-bottom: none; padding-bottom: 0;">
+                    <h2 style="font-size: 1.5rem; text-align: center;">Admin Verification</h2>
+                </div>
+                <form id="admin-password-form" onsubmit="handleAdminPasswordLogin(event)">
+                    <div class="form-group" style="margin-bottom: 1.25rem;">
+                        <label for="admin-password-input">Enter Master Password</label>
+                        <input type="password" id="admin-password-input" placeholder="••••••••" required style="text-align: center; font-size: 1.1rem; letter-spacing: 2px; width: 100%;">
+                        <small class="text-muted block margin-t-05 text-center">Default credentials: <code>admin123</code></small>
+                    </div>
+                    <div class="flex-column gap-05">
+                        <button type="submit" class="btn btn-primary btn-full">Verify Password</button>
+                        <button type="button" class="btn btn-outline btn-full" onclick="cancelAdminAuth()">Cancel & Return</button>
+                        <div style="text-align: center; margin-top: 10px;">
+                            <a href="#" onclick="showAdminForgotPassword(); event.preventDefault();" style="color: var(--color-primary); font-size: 0.85rem; text-decoration: none; font-weight: 500;">Forgot Password?</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- CARD 2: FORGOT PASSWORD -->
+            <div id="admin-forgot-card" class="hidden">
+                <div class="modal-header" style="justify-content: center; margin-bottom: 1.5rem; border-bottom: none; padding-bottom: 0;">
+                    <h2 style="font-size: 1.5rem; text-align: center;">Reset Password</h2>
+                </div>
+                <p class="text-xs text-secondary text-center" style="margin-bottom: 1.5rem; line-height: 1.4;">Enter the registered administrator email address to receive a 6-digit verification code.</p>
+                <form id="admin-forgot-form" onsubmit="handleAdminForgotPassword(event)">
+                    <div class="form-group" style="margin-bottom: 1.5rem;">
+                        <label for="admin-email-input">Admin Email Address</label>
+                        <input type="email" id="admin-email-input" placeholder="admin@example.com" required style="font-size: 1rem; width: 100%;">
+                    </div>
+                    <div class="flex-column gap-05">
+                        <button type="submit" class="btn btn-primary btn-full">Send Verification Code</button>
+                        <button type="button" class="btn btn-outline btn-full" onclick="showAdminAuthLogin()">Back to Login</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- CARD 3: ENTER OTP CODE & NEW PASSWORD -->
+            <div id="admin-reset-card" class="hidden">
+                <div class="modal-header" style="justify-content: center; margin-bottom: 1.5rem; border-bottom: none; padding-bottom: 0;">
+                    <h2 style="font-size: 1.5rem; text-align: center;">Verify Code</h2>
+                </div>
+                <p class="text-xs text-secondary text-center" style="margin-bottom: 1.5rem; line-height: 1.4;">Enter the 6-digit code sent to your email and set your new admin password.</p>
+                <form id="admin-reset-form" onsubmit="handleAdminResetPassword(event)">
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label for="admin-otp-input">6-Digit Verification Code</label>
+                        <input type="text" id="admin-otp-input" placeholder="e.g. 123456" required pattern="^[0-9]{6}$" maxlength="6" style="text-align: center; font-size: 1.2rem; font-weight: bold; letter-spacing: 4px; width: 100%;">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 1.5rem;">
+                        <label for="admin-new-password-input">Enter New Password</label>
+                        <input type="password" id="admin-new-password-input" placeholder="••••••••" required style="font-size: 1rem; width: 100%;">
+                    </div>
+                    <div class="flex-column gap-05">
+                        <button type="submit" class="btn btn-primary btn-full">Reset & Update Password</button>
+                        <button type="button" class="btn btn-outline btn-full" onclick="showAdminAuthLogin()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Global Toast Alert Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- App JavaScript -->
+    <script src="app.js"></script>
+</body>
+</html>
